@@ -1,27 +1,102 @@
-### Construindo e executando sua aplicação
+# 🧮 Project Calculator - Docker Suite
 
-Para iniciar sua aplicação, execute:
-`docker compose up --build`.
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en/)
 
-Sua aplicação estará disponível em http://localhost:3000.
+Este repositório contém uma calculadora web otimizada, pronta para ser executada em ambientes containerizados. Esta documentação fornece instruções detalhadas para construção, execução e deploy utilizando Docker.
 
-### Observação sobre Portas e Exposição
+---
 
-Embora o `Dockerfile` contenha a instrução `EXPOSE 3000`, isso serve apenas para documentação. Para que a aplicação seja acessível do seu navegador, você deve mapear as portas:
+## 🚀 Guia de Início Rápido
 
-- **Via Docker Compose (Recomendado):** Já está configurado no arquivo `compose.yaml`. Basta usar `docker compose up`.
-- **Via Docker Run:** Você precisa passar o parâmetro de porta explicitamente:
-  `docker run -p 3000:3000 teste:latest`
+### Pré-requisitos
 
-### Implantando sua aplicação na nuvem
+Certifique-se de ter instalado em sua máquina:
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) ou Engine.
+* [Docker Compose](https://docs.docker.com/compose/install/).
 
-Primeiro, construa sua imagem, por exemplo: `docker build -t myapp .`.
-Se a sua nuvem usa uma arquitetura de CPU diferente da sua máquina de desenvolvimento (por exemplo, você está em um Mac M1 e seu provedor de nuvem é amd64), você deve construir a imagem para essa plataforma:
-`docker build --platform=linux/amd64 -t myapp .`.
+---
 
-Em seguida, envie-a para o seu registro (registry), por exemplo: `docker push meu-registro.com/myapp`.
+## 🛠️ Construção e Execução
 
-Consulte a documentação de [primeiros passos](https://docs.docker.com/go/get-started-sharing/) do Docker para mais detalhes sobre construção e envio.
+### Opção 1: Docker Compose (Recomendado)
 
-### Referências
-* [Guia de Node.js do Docker](https://docs.docker.com/language/nodejs/)
+O Docker Compose gerencia o build e o mapeamento de portas automaticamente conforme definido no arquivo `compose.yaml`.
+
+```bash
+# Iniciar a aplicação em segundo plano
+docker compose up -d --build
+```
+
+A aplicação estará disponível em: [http://localhost:3000](http://localhost:3000)
+
+### Opção 2: Docker CLI
+
+Se preferir utilizar comandos manuais do Docker:
+
+1. **Construir a imagem:**
+   ```bash
+   docker build -t calculadora-app:latest .
+   ```
+
+2. **Executar o container:**
+   ```bash
+   # Mapeando para a porta padrão 3000
+   docker run -d -p 3000:3000 --name calc-container calculadora-app:latest
+   ```
+
+---
+
+## 🌐 Configuração de Portas
+
+Por padrão, a aplicação interna escuta na porta `3000`. Você pode mapear essa porta para qualquer porta do seu computador host (como a `8080`) durante a execução.
+
+**Exemplo para rodar na porta 8080:**
+```bash
+docker run -d -p 8080:3000 --name calc-8080 calculadora-app:latest
+```
+Acesse em: [http://localhost:8080](http://localhost:8080)
+
+---
+
+## 🏗️ Estrutura do Projeto Docker
+
+* `Dockerfile`: Configuração de build multi-estágio para otimização de imagem (reduzindo o tamanho final e aumentando a segurança).
+* `compose.yaml`: Orquestração simplificada para desenvolvimento local.
+* `.dockerignore`: Garante que arquivos desnecessários (como `node_modules` locais) não inflem o contexto do build.
+
+---
+
+## ☁️ Deploy e Cloud
+
+### Construção Multi-Plataforma
+Se o seu provedor de nuvem utiliza uma arquitetura diferente (ex: AWS EC2 x86_64 enquanto você desenvolve em Mac M1/M2 ARM64):
+
+```bash
+docker build --platform=linux/amd64 -t seu-usuario/calculadora:latest .
+```
+
+### Publicação (Push)
+```bash
+docker push seu-usuario/calculadora:latest
+```
+
+---
+
+## 📝 Comandos Úteis
+
+| Comando | Descrição |
+| :--- | :--- |
+| `docker ps` | Lista containers em execução |
+| `docker logs -f <nome>` | Visualiza logs em tempo real |
+| `docker compose down` | Para e remove os recursos do compose |
+| `docker image prune` | Remove imagens não utilizadas para liberar espaço |
+
+---
+
+## 📖 Referências
+* [Docker Documentation](https://docs.docker.com/)
+* [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md)
+
+---
+*Mantido por [alanfmaia](https://github.com/alanfmaia)*
