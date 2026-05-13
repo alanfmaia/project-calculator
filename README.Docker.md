@@ -67,6 +67,33 @@ Acesse em: [http://localhost:8080](http://localhost:8080)
 
 ---
 
+## 🔐 Segurança e Integridade
+
+Esta imagem segue rigorosos padrões de segurança, sendo verificada contra vulnerabilidades e assinada digitalmente para garantir sua procedência.
+
+### 🛡️ Verificação de Vulnerabilidades (Trivy)
+A imagem é periodicamente escaneada utilizando o [Trivy](https://github.com/aquasecurity/trivy) para garantir que não existam CVEs críticas ou altas.
+
+**Para realizar o scan manualmente:**
+```bash
+trivy image calculadora-app:latest
+```
+
+### ✍️ Assinatura Digital (Cosign)
+Para garantir que a imagem não foi alterada, utilizamos o [Cosign](https://github.com/sigstore/cosign) (projeto Sigstore) para assinatura digital.
+
+**1. Verificar a assinatura da imagem:**
+```bash
+cosign verify --key keys/cosign.pub seu-usuario/calculadora:latest
+```
+
+**2. Assinar uma nova imagem (apenas para mantenedores):**
+```bash
+cosign sign --key keys/cosign.key seu-usuario/calculadora:latest
+```
+
+---
+
 ## ☁️ Deploy e Cloud
 
 ### Construção Multi-Plataforma
