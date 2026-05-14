@@ -9,8 +9,8 @@ app.post('/calculate', (req, res) => {
   const { expression } = req.body;
 
   try {
-    // Safe math evaluation
-    const sanitized = expression.replace(/[^0-9+\-*/().%\s]/g, '');
+    // Safe math evaluation with scientific support
+    const sanitized = expression.replace(/[^0-9+\-*/().%\s**Math\.sincoqrtlg10PIE]/g, '');
     if (!sanitized) return res.json({ error: 'Expressão inválida' });
 
     // Handle percentage
